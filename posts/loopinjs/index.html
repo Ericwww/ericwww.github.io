@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)" />
+<meta name="generator" content="Hugo 0.102.0-DEV" />
+<link rel="shortcut icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
+<meta itemprop="name" content="js中的循环与遍历" />
+<meta itemprop="description" content="" />
+<meta itemprop="datePublished" ZgotmplZ />
+<meta itemprop="dateModified" ZgotmplZ />
+<meta itemprop="image" content="https://ericwww.github.io/imgs/avatar.png" />
+<meta itemprop="keywords" content="前端" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="js中的循环与遍历" />
+<meta property="og:description" content="" />
+<meta property="og:image" content="/imgs/avatar.png" />
+<meta property="og:image:width" content="312" />
+<meta property="og:image:height" content="312" />
+<meta property="og:image:type" content="image/jpeg/png/svg/jpg" />
+<meta property="og:url" content="https://ericwww.github.io/posts/loopinjs/"/>
+<meta property="og:site_name" content="Syasusu&#39;s Blog" />
+<meta property="og:locale" content="zh-CN"/>
+<meta property="article:author" content="Syasusu" />
+<meta property="article:published_time" content="2019-04-15 00:00:00 &#43;0800 CST" />
+<meta property="article:modified_time" content="2019-04-15 00:00:00 &#43;0800 CST" />
+
+
+  <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
+
+  <link rel="stylesheet" href="/css/main.min.28ea124112ce3d326f4cb6cc4cd86f5fb882d3b1fa775e959f3317e1886d95cd.css">
+  <style type="text/css">
+    .post-footer hr:after {
+      content: "~ 我可是有底线的哟 ~";
+    }
+  </style>
+  
+  <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "",ck: "",autoTrack:true})</script>
+
+  <title>js中的循环与遍历 - Syasusu&#39;s Blog</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage"  class="use-motion" >
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Syasusu&#39;s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+    
+      <p class="site-subtitle" itemprop="description">你对我笑，我也会对你笑</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+      
+      <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+    <li class="menu-item menu-item-home">
+      <a href="/" class="hvr-icon-pulse " rel="section"><i class="fa fa-home hvr-icon"></i>首页
+      </a>
+    </li>
+    <li class="menu-item menu-item-archives">
+      <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>归档
+        <span class="badge">16</span>
+      </a>
+    </li>
+    <li class="menu-item menu-item-search">
+      <a role="button" class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+      <div class="toggle sidebar-toggle" role="button">
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-toc">
+        文章目录
+      </li>
+      <li class="sidebar-nav-overview">
+        站点概览
+      </li>
+    </ul>
+    <div class="sidebar-panel-container">
+      
+      <div class="post-toc-wrap sidebar-panel">
+        <div class="post-toc animated"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#do-while语句">do-while语句</a></li>
+        <li><a href="#while语句">while语句</a></li>
+        <li><a href="#for语句">for语句</a>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#语法">语法</a></li>
+                <li><a href="#示例">示例</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#for-in语句">for-in语句</a></li>
+        <li><a href="#for-of语句">for-of语句</a>
+          <ul>
+            <li><a href="#for-in与for-of">for-in与for-of</a></li>
+          </ul>
+        </li>
+        <li><a href="#foreach方法">forEach方法</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div>
+      
+      <div class="site-overview-wrap sidebar-panel">
+        
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Syasusu"
+      src="/imgs/avatar.png">
+  <p class="site-author-name" itemprop="name">Syasusu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="/posts/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="/categories/">
+        <span class="site-state-item-count">0</span>
+        <span class="site-state-item-name">分类</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </a>
+    </div>
+  </nav>
+</div>
+<div class="links-of-social site-overview-item animated">
+
+
+  <span class="links-of-social-item">
+    <a href="https://github.com/ericwww" title="Github → https://github.com/ericwww" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fab fa-github fa-fw  hvr-icon "></i>Github
+    </a>
+  </span>
+  <span class="links-of-social-item">
+    <a href="mailto:syasusu@163.com" title="E-Mail → mailto:syasusu@163.com" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fa fa-envelope fa-fw  hvr-icon "></i>E-Mail
+    </a>
+  </span>
+</div>
+<div class="cc-license animated" itemprop="license">
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank" title="共享知识">
+    <img src="/imgs/cc/big/by_nc_sa.svg" alt="共享知识">
+  </a>
+</div>
+<div class="links-of-blogroll site-overview-item animated">
+  <div class="links-of-blogroll-title">
+    <i class="fa fa-fw fa-link fa-fw"></i>Links
+  </div>
+  <ul class="links-of-blogroll-list">
+    <li class="links-of-blogroll-item">
+      <a href="https://blog.bluefissure.com/" title="https://blog.bluefissure.com/" target="_blank">BlueFissure</a>
+    </li>
+    <li class="links-of-blogroll-item">
+      <a href="http://sora.sound.moe/" title="http://sora.sound.moe/" target="_blank">Eridanus Sora</a>
+    </li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-dimmer"></div>
+    </header>
+    
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+    <div class="main-inner post posts-expand">
+      
+  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://ericwww.github.io/posts/loopinjs/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.png">
+      <meta itemprop="name" content="Syasusu">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Syasusu">
+      <meta itemprop="description" content="">
+    </span>
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="js中的循环与遍历">
+      <meta itemprop="description" content="前一个相对定位和绝对定位的坑还没动笔，然后昨天自己整理了一下js里的循环 do-while语句 后测试循环语句，只有在循环体中的代码执行之后，才">
+    </span>
+    <header class="post-header">
+       <h1 class="post-title" itemprop="name headline">js中的循环与遍历
+  <a href="https://github.com/ericwww/ericwww.github.io/tree/master/post/posts/LoopInJs.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
+  <div class="post-meta-items">
+    
+
+
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="far fa-calendar"></i>
+  </span>
+  <span class="post-meta-item-text">发表于：</span>
+  <time title="发表于：2019-04-15 00:00:00 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2019-04-15 00:00:00 &#43;0800 CST">2019-04-15</time>
+</span>
+    
+    
+  </div>
+  <div class="post-meta-items">
+    
+<span class="post-meta-item" title="字数">
+  <span class="post-meta-item-icon">
+    <i class="far fa-file-word"></i>
+  </span>
+  <span class="post-meta-item-text">字数：</span><span>846</span>
+</span>
+    
+<span class="post-meta-item" title="阅读">
+  <span class="post-meta-item-icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span class="post-meta-item-text">阅读：&asymp;</span>
+  <span>2分钟</span>
+</span>
+
+    
+<span class="post-meta-item" title="浏览">
+  <span class="post-meta-item-icon">
+    <i class="far fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  浏览：
+  </span>
+  <span class="" data-path="/posts/loopinjs/"><i class="fa fa-sync fa-spin"></i></span>
+</span>
+
+  </div>
+  
+</div>
+
+    </header>
+    <div class="post-body" itemprop="articleBody">
+      
+  <p>前一个相对定位和绝对定位的坑还没动笔，然后昨天自己整理了一下js里的循环</p>
+<h2 id="do-while语句">do-while语句</h2>
+<p>后测试循环语句，只有在循环体中的代码执行之后，才会测试出口条件，即无论如何，循环体中的代码都会执行一次。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff79c6">do</span>{
+</span></span><span style="display:flex;"><span>    statement
+</span></span><span style="display:flex;"><span>}<span style="color:#ff79c6">while</span>(expression);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="while语句">while语句</h2>
+<p>前测试循环语句，在循环体内的代码初执行之前，就会对出口条件求值</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff79c6">while</span>(expression) statement
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="for语句">for语句</h2>
+<p>前测试循环语句，但它具有在执行循环前初始化变量和定义循环后要执行的代码的能力。</p>
+<h4 id="语法">语法</h4>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff79c6">for</span>(initializationl;expression;post<span style="color:#ff79c6">-</span>loop<span style="color:#ff79c6">-</span>expression) statement
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="示例">示例</h4>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> count<span style="color:#ff79c6">=</span><span style="color:#bd93f9">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">for</span>(<span style="color:#8be9fd;font-style:italic">var</span> i<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>;i<span style="color:#ff79c6">&lt;</span>count;i<span style="color:#ff79c6">++</span>){
+</span></span><span style="display:flex;"><span>    console.log(i);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以用while改写以上代码</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> count<span style="color:#ff79c6">=</span><span style="color:#bd93f9">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> i<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">while</span>(i<span style="color:#ff79c6">&lt;</span>count){
+</span></span><span style="display:flex;"><span>    console.log(i);
+</span></span><span style="display:flex;"><span>    i<span style="color:#ff79c6">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>while循环做不到的，for循环一样做不到。for循环只是把与循环有关的代码集中在了一个位置。</p>
+<p>for语句的初始化表达式、控制表达式、循环后表达式都是可选的。若全省略便会创建一个无限循环。</p>
+<h2 id="for-in语句">for-in语句</h2>
+<p>它是一种精准的迭代语句，可以用来枚举对象的属性。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff79c6">for</span>(property <span style="color:#ff79c6">in</span> expression) statement
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>它会一直持续到所有属性都被枚举一遍，若要迭代的对象的变量值为null或undefined，for-in会抛出错误。</p>
+<p>在ES5中更正了这一行为，对这种情况不再抛出错误，而只是不执行循环体。</p>
+<h2 id="for-of语句">for-of语句</h2>
+<p>在可迭代对象上创建一个迭代循环，调用自定义迭代钩子，并为每个不同属性的值，执行语句。</p>
+<h3 id="for-in与for-of">for-in与for-of</h3>
+<p>for-in语句以原始插入顺序迭代对象的可枚举属性，for-of语句遍历可迭代对象定义要迭代的数据。</p>
+<p>使用for-in会遍历数组所有可枚举属性，包括原型。而for-of适用于遍历数组对象、字符串、map、set等拥有迭代器对象的集合。</p>
+<h2 id="foreach方法">forEach方法</h2>
+<p>该方法属于引用类型Array的一个迭代方法</p>
+<p>前段时间在大行星2.0开发的时候用到过这个方法，所以这里提一下</p>
+<p>其余迭代方法可参考MDN</p>
+<p>语法：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>arr.forEach(callback [, thisArg]);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<ul>
+<li>callback:为数组中每个元素执行的函数，该函数接收三个参数
+<ul>
+<li>currentValue:数组中正在处理的当前元素</li>
+<li>index:数组中正在处理的当前元素的索引</li>
+<li>array:<code>forEach()</code>正在操作的数组</li>
+</ul>
+</li>
+<li>thisArg:可选参数，当执行回调函数时，用作this的值</li>
+</ul>
+</blockquote>
+
+
+    </div>
+    <footer class="post-footer">
+      
+
+<div class="post-tags">
+  
+    <a href="/tags/%e5%89%8d%e7%ab%af">
+    前端
+  </a>
+</div>
+
+<hr/>
+
+
+
+
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    <a href="https://ericwww.github.io/posts/arrayinjs/" rel="next" title="JavaScript中的引用类型Array">
+      <i class="fa fa-chevron-left"></i> JavaScript中的引用类型Array
+    </a>
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    <a href="https://ericwww.github.io/posts/inlineandblock/" rel="prev" title="行内元素和块元素">
+      行内元素和块元素
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+    </footer>
+  </article>
+</div>
+
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    2017 - 2022
+  </span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syasu</span>
+</div>
+
+<div class="powered-by">
+  由 <a href='https://gohugo.io' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' target='_blank'>Hugo NexT.Gemini</a> 强力驱动
+</div>
+
+
+    </div>
+  </footer>
+  <script type="text/javascript" src="//unpkg.com/animejs@3.2.1/lib/anime.min.js" defer></script>
+  <script type="text/javascript" src="//unpkg.com/mathjax@3.2.0/es5/tex-mml-chtml.js" defer></script>
+
+
+
+
+<script type="text/javascript" src="/js/hugo-next.min.4caa8ee60ccc3c740c130502fcb8bc4de48e32c300a9ba9e8d1da71f70cee5b5.js" defer></script> 
+</body>
+
+</html>

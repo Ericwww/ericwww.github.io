@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/posts/</link>
+    <description>Recent content in Posts on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 08 Mar 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JavaScript中的数据结构（二）</title>
+      <link>https://ericwww.github.io/posts/datastructureinjavascript2/</link>
+      <pubDate>Sun, 08 Mar 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/datastructureinjavascript2/</guid>
+      <description>栈 栈是一个线性结构，在计算机中是一个相当常见的数据结构。 栈的特点是只能在某一端添加或删除数据，遵循先进后出的原则 实现 1 2 3 4 5 6 7 8 9 10 11 12</description>
+    </item>
+    
+    <item>
+      <title>JavaScript中的数据结构（一）</title>
+      <link>https://ericwww.github.io/posts/datastructureinjavascript1/</link>
+      <pubDate>Fri, 06 Mar 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/datastructureinjavascript1/</guid>
+      <description>链表 链表是一个线性结构，同时也是一个天然的递归结构。链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的</description>
+    </item>
+    
+    <item>
+      <title>输入url后到页面的呈现的详细过程</title>
+      <link>https://ericwww.github.io/posts/whathappeninbrowser/</link>
+      <pubDate>Tue, 25 Feb 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/whathappeninbrowser/</guid>
+      <description>一个老生常谈的问题，一个面试时很大概率出现的问题。 虽然网上也有很多这种文章，这里自己写一篇。一是为了亲自过一遍加深理解和记忆，二是留个档，以</description>
+    </item>
+    
+    <item>
+      <title>利用dht11与Raspberry Pi构建温湿度监控平台</title>
+      <link>https://ericwww.github.io/posts/dht11/</link>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/dht11/</guid>
+      <description>这次学校短学期的课题是利用dht11与树莓派做一个温湿度监控平台，要求能实现实时显示，查询历史，定时浇灌，报警等功能。 硬件 dht11是一款有</description>
+    </item>
+    
+    <item>
+      <title>JavaScript中的引用类型Array</title>
+      <link>https://ericwww.github.io/posts/arrayinjs/</link>
+      <pubDate>Sat, 11 May 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/arrayinjs/</guid>
+      <description>js数组的每一项可以保存任何类型的数据。也就是说，可以用数组的第一个位置来保存字符串，第二个位置来保存数组，用第三个位置保存对象。并且，数组</description>
+    </item>
+    
+    <item>
+      <title>js中的循环与遍历</title>
+      <link>https://ericwww.github.io/posts/loopinjs/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/loopinjs/</guid>
+      <description>前一个相对定位和绝对定位的坑还没动笔，然后昨天自己整理了一下js里的循环 do-while语句 后测试循环语句，只有在循环体中的代码执行之后，才</description>
+    </item>
+    
+    <item>
+      <title>行内元素和块元素</title>
+      <link>https://ericwww.github.io/posts/inlineandblock/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/inlineandblock/</guid>
+      <description>这几天在学长学姐的一个公司那边跟着学前端，基本都还是写一个界面为主，在写CSS的时候就碰到了行内元素和块元素这两个知识点，这里做个整理，方便</description>
+    </item>
+    
+    <item>
+      <title>尝试找出ET和LT的换算关系</title>
+      <link>https://ericwww.github.io/posts/ettolt/</link>
+      <pubDate>Fri, 04 Jan 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/ettolt/</guid>
+      <description>一到考试周就不想复习，想敲代码，这一次也不例外。 这次想着做一个狒狒4.4新版本的限时采集计算器，每次上线想采集还要再打开wiki看一下真的好</description>
+    </item>
+    
+    <item>
+      <title>贝法游【学】记</title>
+      <link>https://ericwww.github.io/posts/onemonthatbelfast/</link>
+      <pubDate>Thu, 23 Aug 2018 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/onemonthatbelfast/</guid>
+      <description>好久没写博客了，刚好趁这个机会记录一下我在贝法一个月的生活吧 8.21 晚12:45 我们从上海浦东(PVG)起飞奔赴贝尔法斯特，途中在阿布扎比(AUH</description>
+    </item>
+    
+    <item>
+      <title>图像的几何变换(1)</title>
+      <link>https://ericwww.github.io/posts/imagegeotrans/</link>
+      <pubDate>Sun, 11 Mar 2018 22:38:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/imagegeotrans/</guid>
+      <description>本篇主要介绍仿射变换 仿射变换类型有：平移、缩放、旋转 仿射变换矩阵： $$ A=\left\{\begin{matrix}a_{11} &amp;amp; a_{12} &amp;amp; a_{13} \\ a_{21} &amp;amp; a_{22} &amp;amp; a_{23} \\ 0 &amp;amp; 0 &amp;amp; 1\end{matrix}\right\} $$ 平移 平移是最简单的仿射变换，假设将空</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7下安装Shadowsocks 搭建ss</title>
+      <link>https://ericwww.github.io/posts/deployshadowsocks/</link>
+      <pubDate>Mon, 05 Mar 2018 21:36:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/deployshadowsocks/</guid>
+      <description>每次搭ss都要上网查一下教程，但网上的教程都没有提到针对CentOS7下的防火墙的处理，这里便想自己写一篇留个档。 安装pip pip是 python 的包管</description>
+    </item>
+    
+    <item>
+      <title>footer绝对置底</title>
+      <link>https://ericwww.github.io/posts/footerbottom/</link>
+      <pubDate>Mon, 29 Jan 2018 00:25:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/footerbottom/</guid>
+      <description>今天在写三位一体计算器的时候想将footer绝对置底，以我仅有的CSS知识写了半天无果，便上网搜了一下，找到了知乎专栏的一篇文章解决了我的问</description>
+    </item>
+    
+    <item>
+      <title>三色绘恋线下活动repo</title>
+      <link>https://ericwww.github.io/posts/tricolourlovestoryofflinerepo/</link>
+      <pubDate>Sat, 13 Jan 2018 23:38:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/tricolourlovestoryofflinerepo/</guid>
+      <description>&lt;p&gt;　　前几天在微博上看到三色绘恋有线下活动，我刚好买了周边，就报名了，并立下flag，“抽到我，我就去！”。结果没想到真的抽到我了，那就去咯！&lt;del&gt;期末考？考试周？我不知道你在说什么。&lt;/del&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to build blog with Hexo on Windows</title>
+      <link>https://ericwww.github.io/posts/buildblogwithhexo/</link>
+      <pubDate>Fri, 29 Dec 2017 23:29:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/buildblogwithhexo/</guid>
+      <description>&lt;h2 id=&#34;第一次搭blog的经历&#34;&gt;第一次搭Blog的经历&lt;/h2&gt;
+&lt;p&gt;16年暑假，用Wordpress和阿里云学生机搭了一个Blog，配环境、弄数据库、修改主题搞了半天，总算是弄好了。
+结果后面数据库不知道因为啥原因出了点问题，也懒得修，就直接弃了。&lt;/p&gt;
+&lt;p&gt;下图为原Blog的遗照(它现在还苟延残喘在我本地的WampServer上)&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Codewars：The Supermarket Queue</title>
+      <link>https://ericwww.github.io/posts/codewars1/</link>
+      <pubDate>Thu, 02 Nov 2017 23:50:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/codewars1/</guid>
+      <description>有段时间沉迷在codewars刷题，现在趁着有博客了把这道题记录下来 The Supermarket Queue There is a queue for the self-checkout tills at the supermarket. Your task is write a function to calculate the total time required for all the customers to check out! The function has</description>
+    </item>
+    
+    <item>
+      <title>Windows下Python2&amp;Python3共存的解决方案</title>
+      <link>https://ericwww.github.io/posts/py2736together/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/py2736together/</guid>
+      <description>近来做院创和新苗要用到OpenCV了，自己电脑装的是Python3.6，但是cv2得在Python2.7下跑，又懒得搞虚拟机，就搞了个双版本</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/tags/</link>
+    <description>Recent content in Tags on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 08 Mar 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端</title>
+      <link>https://ericwww.github.io/tags/%E5%89%8D%E7%AB%AF/</link>
+      <pubDate>Sun, 08 Mar 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/%E5%89%8D%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Record</title>
+      <link>https://ericwww.github.io/tags/record/</link>
+      <pubDate>Fri, 04 Jan 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/record/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Life</title>
+      <link>https://ericwww.github.io/tags/life/</link>
+      <pubDate>Thu, 23 Aug 2018 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/life/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OpenCV</title>
+      <link>https://ericwww.github.io/tags/opencv/</link>
+      <pubDate>Sun, 11 Mar 2018 22:38:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/opencv/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>教程</title>
+      <link>https://ericwww.github.io/tags/%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Mon, 05 Mar 2018 21:36:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/%E6%95%99%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Essay</title>
+      <link>https://ericwww.github.io/tags/essay/</link>
+      <pubDate>Sat, 13 Jan 2018 23:38:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/essay/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Algorithm Is Fun</title>
+      <link>https://ericwww.github.io/tags/algorithm-is-fun/</link>
+      <pubDate>Thu, 02 Nov 2017 23:50:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/algorithm-is-fun/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://ericwww.github.io/tags/python/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ericwww.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

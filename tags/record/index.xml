@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Record on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/tags/record/</link>
+    <description>Recent content in Record on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 04 Jan 2019 00:00:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/tags/record/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>尝试找出ET和LT的换算关系</title>
+      <link>https://ericwww.github.io/posts/ettolt/</link>
+      <pubDate>Fri, 04 Jan 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/ettolt/</guid>
+      <description>一到考试周就不想复习，想敲代码，这一次也不例外。 这次想着做一个狒狒4.4新版本的限时采集计算器，每次上线想采集还要再打开wiki看一下真的好</description>
+    </item>
+    
+  </channel>
+</rss>

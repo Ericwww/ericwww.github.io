@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)" />
+<meta name="generator" content="Hugo 0.102.0-DEV" />
+<link rel="shortcut icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
+<meta itemprop="name" content="图像的几何变换(1)" />
+<meta itemprop="description" content="" />
+<meta itemprop="datePublished" ZgotmplZ />
+<meta itemprop="dateModified" ZgotmplZ />
+<meta itemprop="image" content="https://ericwww.github.io/imgs/avatar.png" />
+<meta itemprop="keywords" content="OpenCV" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="图像的几何变换(1)" />
+<meta property="og:description" content="" />
+<meta property="og:image" content="/imgs/avatar.png" />
+<meta property="og:image:width" content="312" />
+<meta property="og:image:height" content="312" />
+<meta property="og:image:type" content="image/jpeg/png/svg/jpg" />
+<meta property="og:url" content="https://ericwww.github.io/posts/imagegeotrans/"/>
+<meta property="og:site_name" content="Syasusu&#39;s Blog" />
+<meta property="og:locale" content="zh-CN"/>
+<meta property="article:author" content="Syasusu" />
+<meta property="article:published_time" content="2018-03-11 22:38:00 &#43;0800 CST" />
+<meta property="article:modified_time" content="2018-03-11 22:38:00 &#43;0800 CST" />
+
+
+  <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
+
+  <link rel="stylesheet" href="/css/main.min.28ea124112ce3d326f4cb6cc4cd86f5fb882d3b1fa775e959f3317e1886d95cd.css">
+  <style type="text/css">
+    .post-footer hr:after {
+      content: "~ 我可是有底线的哟 ~";
+    }
+  </style>
+  
+  <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "",ck: "",autoTrack:true})</script>
+
+  <title>图像的几何变换(1) - Syasusu&#39;s Blog</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage"  class="use-motion" >
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Syasusu&#39;s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+    
+      <p class="site-subtitle" itemprop="description">你对我笑，我也会对你笑</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+      
+      <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+    <li class="menu-item menu-item-home">
+      <a href="/" class="hvr-icon-pulse " rel="section"><i class="fa fa-home hvr-icon"></i>首页
+      </a>
+    </li>
+    <li class="menu-item menu-item-archives">
+      <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>归档
+        <span class="badge">16</span>
+      </a>
+    </li>
+    <li class="menu-item menu-item-search">
+      <a role="button" class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+      <div class="toggle sidebar-toggle" role="button">
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-inner sidebar-overview-active">
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-toc">
+        文章目录
+      </li>
+      <li class="sidebar-nav-overview">
+        站点概览
+      </li>
+    </ul>
+    <div class="sidebar-panel-container">
+      
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      
+      <div class="site-overview-wrap sidebar-panel">
+        
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Syasusu"
+      src="/imgs/avatar.png">
+  <p class="site-author-name" itemprop="name">Syasusu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="/posts/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="/categories/">
+        <span class="site-state-item-count">0</span>
+        <span class="site-state-item-name">分类</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </a>
+    </div>
+  </nav>
+</div>
+<div class="links-of-social site-overview-item animated">
+
+
+  <span class="links-of-social-item">
+    <a href="https://github.com/ericwww" title="Github → https://github.com/ericwww" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fab fa-github fa-fw  hvr-icon "></i>Github
+    </a>
+  </span>
+  <span class="links-of-social-item">
+    <a href="mailto:syasusu@163.com" title="E-Mail → mailto:syasusu@163.com" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fa fa-envelope fa-fw  hvr-icon "></i>E-Mail
+    </a>
+  </span>
+</div>
+<div class="cc-license animated" itemprop="license">
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank" title="共享知识">
+    <img src="/imgs/cc/big/by_nc_sa.svg" alt="共享知识">
+  </a>
+</div>
+<div class="links-of-blogroll site-overview-item animated">
+  <div class="links-of-blogroll-title">
+    <i class="fa fa-fw fa-link fa-fw"></i>Links
+  </div>
+  <ul class="links-of-blogroll-list">
+    <li class="links-of-blogroll-item">
+      <a href="https://blog.bluefissure.com/" title="https://blog.bluefissure.com/" target="_blank">BlueFissure</a>
+    </li>
+    <li class="links-of-blogroll-item">
+      <a href="http://sora.sound.moe/" title="http://sora.sound.moe/" target="_blank">Eridanus Sora</a>
+    </li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-dimmer"></div>
+    </header>
+    
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+    <div class="main-inner post posts-expand">
+      
+  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://ericwww.github.io/posts/imagegeotrans/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.png">
+      <meta itemprop="name" content="Syasusu">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Syasusu">
+      <meta itemprop="description" content="">
+    </span>
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="图像的几何变换(1)">
+      <meta itemprop="description" content="本篇主要介绍仿射变换 仿射变换类型有：平移、缩放、旋转 仿射变换矩阵： $$ A=\left\{\begin{matrix}a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ 0 &amp; 0 &amp; 1\end{matrix}\right\} $$ 平移 平移是最简单的仿射变换，假设将空">
+    </span>
+    <header class="post-header">
+       <h1 class="post-title" itemprop="name headline">图像的几何变换(1)
+  <a href="https://github.com/ericwww/ericwww.github.io/tree/master/post/posts/ImageGeoTrans.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
+  <div class="post-meta-items">
+    
+
+
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="far fa-calendar"></i>
+  </span>
+  <span class="post-meta-item-text">发表于：</span>
+  <time title="发表于：2018-03-11 22:38:00 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2018-03-11 22:38:00 &#43;0800 CST">2018-03-11</time>
+</span>
+    
+    
+  </div>
+  <div class="post-meta-items">
+    
+<span class="post-meta-item" title="字数">
+  <span class="post-meta-item-icon">
+    <i class="far fa-file-word"></i>
+  </span>
+  <span class="post-meta-item-text">字数：</span><span>3573</span>
+</span>
+    
+<span class="post-meta-item" title="阅读">
+  <span class="post-meta-item-icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span class="post-meta-item-text">阅读：&asymp;</span>
+  <span>8分钟</span>
+</span>
+
+    
+<span class="post-meta-item" title="浏览">
+  <span class="post-meta-item-icon">
+    <i class="far fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  浏览：
+  </span>
+  <span class="" data-path="/posts/imagegeotrans/"><i class="fa fa-sync fa-spin"></i></span>
+</span>
+
+  </div>
+  
+</div>
+
+    </header>
+    <div class="post-body" itemprop="articleBody">
+      
+  <p>本篇主要介绍仿射变换</p>
+<!-- more -->
+<p>仿射变换类型有：平移、缩放、旋转</p>
+<p>仿射变换矩阵：</p>
+<p>$$
+A=\left\{\begin{matrix}a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ 0 &amp; 0 &amp; 1\end{matrix}\right\}
+$$</p>
+<h3 id="平移">平移</h3>
+<p>平移是最简单的仿射变换，假设将空间坐标$(x,y)$，先沿x轴正方向平移200，再沿y轴正方向平移300，平移后的坐标为$(\widetilde x,\widetilde y)=(x+200,y+300)$</p>
+<p>将假设一般化，假设任意空间坐标$(x,y)$先沿x轴平移$t_{x}$，再沿y轴平移$t_{y}$，则最后得到的坐标为$(\widetilde x,\widetilde y)=(x+t_{x},y+t_{y})$。</p>
+<p>用矩阵形式来表示该平移变换过程如下：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\ \widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}1 &amp; 0 &amp; t_{x} \\0 &amp; 1 &amp; t_{y} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<p>其中，若$t_{x}&gt;0$，则表示沿x轴正方向移动；若$t_{x}&lt;0$，则表示沿x轴负方向移动。$t_{y}$与之类似。</p>
+<h3 id="放大和缩小">放大和缩小</h3>
+<p>二维空间坐标$(x,y)$以$(0,0)$为中心在水平方向上缩放$s_{x}$倍，在垂直方向上缩放$s_{y}$倍，指的是变换后的坐标位置离$(0,0)$的水平距离变为原坐标离位置中心点的水平距离的$s_{x}$倍，垂直距离变为原坐标离中心点的垂直距离的$s_{y}$倍。</p>
+<p>根据以上定义，$(x,y)$以$(0,0)$为中心缩放变换后的坐标为$(\widetilde x,\widetilde y)=(x*s_{x},y*s_{y})$，显然，变换后的坐标位置离中心点的水平距离由$|x|$缩放为$|s_{x}x|$，垂直距离由$|y|$缩放为$|s_{y}y|$。</p>
+<p>用矩阵形式来表示该缩放过程如下：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\ \widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}s_{x} &amp; 0 &amp; 0 \\0 &amp; s_{y} &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<p>若$s_{x}&gt;1$，则表示在水平方向上放大，就是离中心点的水平距离变大了，反之，则在水平方向上缩小。</p>
+<p>若$s_{y}&gt;1$，则表示在垂直方向上放大，反之，则在垂直方向上缩小。</p>
+<p>若$s_{x}=s_{y}$，即为等比缩放。</p>
+<p>以上介绍的是以原点$(0,0)$为中心的缩放变换，那么$(x,y)$一任意一点$(x_{0},y_{0})$为中心在水平方向上缩放$s_{x}$倍，在垂直方向上缩放$s_{y}$倍，则缩放后的坐标为$(\widetilde x,\widetilde y)=(x_{0}+s_{x}(x-x_{0}),y_{0}+s_{y}(y-y_{0}))$</p>
+<p>用矩阵形式可以表示为：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\\widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}1 &amp; 0 &amp; x_{0} \\0 &amp; 1 &amp; y_{0} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}s_{x} &amp; 0 &amp; 0 \\0 &amp; s_{y} &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}1 &amp; 0 &amp; -x_{0} \\0 &amp; 1 &amp; -y_{0} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<h3 id="旋转">旋转</h3>
+<p>除了坐标的平移、缩放，还有一种常用的坐标变换，即旋转。</p>
+<p>旋转有顺时针旋转和逆时针旋转。顺时针旋转α后的坐标$(\widetilde x,\widetilde y)$，$cosθ=\frac{x}{p}$，$sinθ=\frac{y}{p}$，其中p代表$(x,y)$到中心点$(0,0)$的距离，则</p>
+<p>$$
+cos(θ+α)=cosθcosα-sinθsinα=\frac{x}{p}cosα-\frac{y}{p}sinα=\frac{\widetilde x}{p}
+$$</p>
+<p>$$
+sin(θ+α)=sinθcosα+cosθsinα=\frac{y}{p}cosα+\frac{x}{p}sinα=\frac{\widetilde y}{p}
+$$</p>
+<p>化简以上两个公式，可得$\widetilde x=xcosα-ysinα$，$\widetilde y=xsinα+ycosα$</p>
+<p>用矩阵形式表示为：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\\widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}cosα &amp; -sinα &amp; 0 \\sinα &amp; cosα &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<p>相反如果以原点为中心，逆时针旋转α，$cosθ=\frac{x}{p}$，$sinθ=\frac{y}{p}$，且</p>
+<p>$$
+cos(θ-α)=cosθcosα+sinθsinα=\frac{x}{p}cosα+\frac{y}{p}sinα=\frac{\widetilde x}{p}
+$$</p>
+<p>$$
+sin(θ-α)=sinθcosα-cosθsinα=\frac{y}{p}cosα-\frac{x}{p}sinα=\frac{\widetilde y}{p}
+$$</p>
+<p>化简以上两个公式，可得$\widetilde x=xcosα+ysinα$，$\widetilde y=-xsinα+ycosα$</p>
+<p>用矩阵形式表示为：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\\widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}cosα &amp; sinα &amp; 0 \\-sinα &amp; cosα &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<p>从以上两个仿射矩阵可以得到，逆时针旋转α和顺时针旋转-α是一样的，所以用程序实现时，只需要实现其中一种就可以了。</p>
+<p>以上讨论的旋转变换是以$(0,0)$为中心进行旋转的，如果$(x,y)$绕任意一点$(x_{0},y_{0})$逆时针旋转α，则首先将原点移到旋转中心，然后绕原点旋转，最后移回坐标原点，即：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\\widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}1 &amp; 0 &amp; x_{0} \\0 &amp; 1 &amp; y_{0} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}cosα &amp; sinα &amp; 0 \\-sinα &amp; cosα &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}1 &amp; 0 &amp; -x_{0} \\0 &amp; 1 &amp; -y_{0} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<p>需要注意，等式右边的计算是从右向左进行的。</p>
+<h3 id="计算仿射矩阵">计算仿射矩阵</h3>
+<h4 id="方程法">方程法</h4>
+<p>仿射变换有六个未知数，所以只需要三组对应位置坐标，构造出由六个方程组成的方程组即可解六个未知数。</p>
+<p>举例：如果$(0,0)$，$(200,0)$，$(0,200)$这三个坐标通过某仿射变换矩阵$A$，分别转换为$(0,0)$，$(100,0)$，$(0,100)$，则可利用这三组对应坐标构造出六个方程，求解出$A$，</p>
+<p>OpenCV提供的函数：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cv2<span style="color:#ff79c6">.</span>getAffineTransform(src, dst)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过方程法计算参数src到dst的对应仿射变换矩阵。对于该函数的Python API，输入参数src和dst分别代表原坐标和变换后的坐标，且均为3行2列的二维ndarray，每一行代表一个坐标，且数据类型必须为浮点型，否则会报错。</p>
+<p>示例：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> cv2
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> numpy <span style="color:#ff79c6">as</span> np
+</span></span><span style="display:flex;"><span>src <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>array([[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>],[<span style="color:#bd93f9">200</span>,<span style="color:#bd93f9">0</span>],[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">200</span>]],np<span style="color:#ff79c6">.</span>float32)
+</span></span><span style="display:flex;"><span>dst <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>array([[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>],[<span style="color:#bd93f9">100</span>,<span style="color:#bd93f9">0</span>],[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">100</span>]],np<span style="color:#ff79c6">.</span>float32)
+</span></span><span style="display:flex;"><span>A <span style="color:#ff79c6">=</span> cv2<span style="color:#ff79c6">.</span>getAffineTransform(src, dst)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>打印A的结果为：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>array([[ <span style="color:#bd93f9">0.5</span> , <span style="color:#bd93f9">0.</span> , <span style="color:#bd93f9">0.</span> ],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#bd93f9">0.</span> , <span style="color:#bd93f9">0.5</span> , <span style="color:#bd93f9">0.</span> ]])
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="矩阵法">矩阵法</h4>
+<p>对于使用矩阵相乘法计算仿射矩阵，前提是需要知道基本仿射变换步骤，即如果$(x,y)$先缩放再平移，则变换后的矩阵形式为：</p>
+<p>$$
+\left\{\begin{matrix}\widetilde x \\\widetilde y \\1\end{matrix}\right\}=\left\{\begin{matrix}1 &amp; 0 &amp; t_{x} \\0 &amp; 1 &amp; t_{y} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}s_{x} &amp; 0 &amp; 0 \\0 &amp; s_{y} &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}x \\y \\1\end{matrix}\right\}
+$$</p>
+<p>显然，以上仿射变换矩阵是由平移矩阵乘以缩放矩阵得到的。需要注意的是，虽然先缩放再平移，但是仿射变换矩阵是平移仿射矩阵乘以缩放仿射矩阵，即等式右边的运算是从右向左进行的。</p>
+<p>对于矩阵的乘法，Numpy提供了dot函数来实现。</p>
+<p>假设对空间坐标先等比例缩放2倍，然后在水平方向上平移100，在垂直方向上平移200，计算该仿射变换矩阵，代码如下</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> numpy <span style="color:#ff79c6">as</span> np
+</span></span><span style="display:flex;"><span>s <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>array([[<span style="color:#bd93f9">0.5</span>,<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>],[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0.5</span>,<span style="color:#bd93f9">0</span>],[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">1</span>]])<span style="color:#6272a4">#缩放矩阵</span>
+</span></span><span style="display:flex;"><span>t <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>array([[<span style="color:#bd93f9">1</span>,<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">100</span>],[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">1</span>,<span style="color:#bd93f9">200</span>],[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">1</span>]])<span style="color:#6272a4">#平移矩阵</span>
+</span></span><span style="display:flex;"><span>A <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>dot(t,s)<span style="color:#6272a4">#矩阵相乘</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>A
+</span></span><span style="display:flex;"><span>array([[ <span style="color:#bd93f9">0.5</span> , <span style="color:#bd93f9">0.</span> , <span style="color:#bd93f9">100.</span> ],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#bd93f9">0.</span> , <span style="color:#bd93f9">0.5</span> , <span style="color:#bd93f9">200.</span> ],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#bd93f9">0.</span> , <span style="color:#bd93f9">0.</span> , <span style="color:#bd93f9">1.</span> ]])
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>类似的，如果以$(x_{0},y_{0})$为中心进行缩放变化，然后逆时针旋转α，则仿射变换矩阵为：</p>
+<p>$$
+\left\{\begin{matrix}1 &amp; 0 &amp; x_{0} \\0 &amp; 1 &amp; y_{0} \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\left\{\begin{matrix}cosα &amp; sinα &amp; 0 \\-sinα &amp; cosα &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\left\{\begin{matrix}s_{x} &amp; 0 &amp; 0 \\0 &amp; s_{y} &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right\}\right\}\left\{\begin{matrix}1 &amp; 0 &amp; -x_{0} \\0 &amp; 1 &amp; -y_{0} \\0 &amp; 0 &amp; 1\end{matrix}\right\}
+$$</p>
+<p>整理后结果为：</p>
+<p>$$
+A=\left\{\begin{matrix}s_{x}cosα &amp; s_{y}cosα &amp; (1-s_{x}cosα)x_{0}-s_{y}y_{0}sinα \\-s_{x}cosα &amp; s_{y}cosα &amp; (1-s_{y}cosα)y_{0}+s_{x}x_{0}sinα \\0 &amp; 0 &amp; 1\end{matrix}\right\}
+$$</p>
+<p>如果还需平移，则只需将结果左乘一个平移仿射矩阵即可。</p>
+<p>如果先逆时针旋转α再进行缩放处理，则仿射变换矩阵为：</p>
+<p>$$
+A=\left\{\begin{matrix}s_{x}cosα &amp; s_{x}cosα &amp; (1-s_{x}cosα)x_{0}-s_{x}y_{0}sinα \\-s_{y}cosα &amp; s_{y}cosα &amp; (1-s_{y}cosα)y_{0}+s_{y}x_{0}sinα \\0 &amp; 0 &amp; 1\end{matrix}\right\}
+$$</p>
+<p>从得到地两个仿射变换矩阵可以看出，如果是等比例缩放的，即$s_{x}=s_{y}$，则两个仿射变换矩阵是相等的。对于这种等比例缩放的仿射变换，OpenCV提供了函数：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cv2<span style="color:#ff79c6">.</span>getRotationMatrix2D(center, angle, scale)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用于计算仿射变换矩阵，其本质还是通过各个矩阵相乘得到的，其中参数center为变换中心点的坐标，scale是等比例缩放的系数，angle是逆时针旋转的角度。注意，angle是以角度为单位，而不是弧度。</p>
+<p>举例：计算以$(40,50)$为中心逆时针旋转30°的仿射变换。Python实现代码如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> cv2
+</span></span><span style="display:flex;"><span>A <span style="color:#ff79c6">=</span> cv2<span style="color:#ff79c6">.</span>getRotationMatrix2D((<span style="color:#bd93f9">40</span>,<span style="color:#bd93f9">50</span>)), <span style="color:#bd93f9">30</span>, <span style="color:#bd93f9">0.5</span>)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>返回值是一个2×3的ndarray且数据类型是double，输出值为：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>array([[<span style="color:#bd93f9">0.4330127</span>,<span style="color:#bd93f9">0.25</span>,<span style="color:#bd93f9">10.17949192</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ff79c6">-</span><span style="color:#bd93f9">0.25</span>,<span style="color:#bd93f9">0.4330127</span>,<span style="color:#bd93f9">38.34936491</span>]])
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+    </div>
+    <footer class="post-footer">
+      
+
+<div class="post-tags">
+  
+    <a href="/tags/opencv">
+    OpenCV
+  </a>
+</div>
+
+<hr/>
+
+
+
+
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    <a href="https://ericwww.github.io/posts/onemonthatbelfast/" rel="next" title="贝法游【学】记">
+      <i class="fa fa-chevron-left"></i> 贝法游【学】记
+    </a>
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    <a href="https://ericwww.github.io/posts/deployshadowsocks/" rel="prev" title="CentOS 7下安装Shadowsocks 搭建ss">
+      CentOS 7下安装Shadowsocks 搭建ss
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+    </footer>
+  </article>
+</div>
+
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    2017 - 2022
+  </span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syasu</span>
+</div>
+
+<div class="powered-by">
+  由 <a href='https://gohugo.io' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' target='_blank'>Hugo NexT.Gemini</a> 强力驱动
+</div>
+
+
+    </div>
+  </footer>
+  <script type="text/javascript" src="//unpkg.com/animejs@3.2.1/lib/anime.min.js" defer></script>
+  <script type="text/javascript" src="//unpkg.com/mathjax@3.2.0/es5/tex-mml-chtml.js" defer></script>
+
+
+
+
+<script type="text/javascript" src="/js/hugo-next.min.4caa8ee60ccc3c740c130502fcb8bc4de48e32c300a9ba9e8d1da71f70cee5b5.js" defer></script> 
+</body>
+
+</html>

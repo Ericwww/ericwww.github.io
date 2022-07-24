@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OpenCV on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/tags/opencv/</link>
+    <description>Recent content in OpenCV on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 11 Mar 2018 22:38:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/tags/opencv/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>图像的几何变换(1)</title>
+      <link>https://ericwww.github.io/posts/imagegeotrans/</link>
+      <pubDate>Sun, 11 Mar 2018 22:38:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/imagegeotrans/</guid>
+      <description>本篇主要介绍仿射变换 仿射变换类型有：平移、缩放、旋转 仿射变换矩阵： $$ A=\left\{\begin{matrix}a_{11} &amp;amp; a_{12} &amp;amp; a_{13} \\ a_{21} &amp;amp; a_{22} &amp;amp; a_{23} \\ 0 &amp;amp; 0 &amp;amp; 1\end{matrix}\right\} $$ 平移 平移是最简单的仿射变换，假设将空</description>
+    </item>
+    
+  </channel>
+</rss>

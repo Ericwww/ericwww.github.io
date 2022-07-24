@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>教程 on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/tags/%E6%95%99%E7%A8%8B/</link>
+    <description>Recent content in 教程 on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 05 Mar 2018 21:36:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/tags/%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CentOS 7下安装Shadowsocks 搭建ss</title>
+      <link>https://ericwww.github.io/posts/deployshadowsocks/</link>
+      <pubDate>Mon, 05 Mar 2018 21:36:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/deployshadowsocks/</guid>
+      <description>每次搭ss都要上网查一下教程，但网上的教程都没有提到针对CentOS7下的防火墙的处理，这里便想自己写一篇留个档。 安装pip pip是 python 的包管</description>
+    </item>
+    
+    <item>
+      <title>How to build blog with Hexo on Windows</title>
+      <link>https://ericwww.github.io/posts/buildblogwithhexo/</link>
+      <pubDate>Fri, 29 Dec 2017 23:29:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/buildblogwithhexo/</guid>
+      <description>&lt;h2 id=&#34;第一次搭blog的经历&#34;&gt;第一次搭Blog的经历&lt;/h2&gt;
+&lt;p&gt;16年暑假，用Wordpress和阿里云学生机搭了一个Blog，配环境、弄数据库、修改主题搞了半天，总算是弄好了。
+结果后面数据库不知道因为啥原因出了点问题，也懒得修，就直接弃了。&lt;/p&gt;
+&lt;p&gt;下图为原Blog的遗照(它现在还苟延残喘在我本地的WampServer上)&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)" />
+<meta name="generator" content="Hugo 0.102.0-DEV" />
+<link rel="shortcut icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
+<meta itemprop="name" content="输入url后到页面的呈现的详细过程" />
+<meta itemprop="description" content="" />
+<meta itemprop="datePublished" ZgotmplZ />
+<meta itemprop="dateModified" ZgotmplZ />
+<meta itemprop="image" content="https://ericwww.github.io/imgs/avatar.png" />
+<meta itemprop="keywords" content="前端" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="输入url后到页面的呈现的详细过程" />
+<meta property="og:description" content="" />
+<meta property="og:image" content="/imgs/avatar.png" />
+<meta property="og:image:width" content="312" />
+<meta property="og:image:height" content="312" />
+<meta property="og:image:type" content="image/jpeg/png/svg/jpg" />
+<meta property="og:url" content="https://ericwww.github.io/posts/whathappeninbrowser/"/>
+<meta property="og:site_name" content="Syasusu&#39;s Blog" />
+<meta property="og:locale" content="zh-CN"/>
+<meta property="article:author" content="Syasusu" />
+<meta property="article:published_time" content="2020-02-25 00:00:00 &#43;0800 CST" />
+<meta property="article:modified_time" content="2020-02-25 00:00:00 &#43;0800 CST" />
+
+
+  <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
+
+  <link rel="stylesheet" href="/css/main.min.28ea124112ce3d326f4cb6cc4cd86f5fb882d3b1fa775e959f3317e1886d95cd.css">
+  <style type="text/css">
+    .post-footer hr:after {
+      content: "~ 我可是有底线的哟 ~";
+    }
+  </style>
+  
+  <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "",ck: "",autoTrack:true})</script>
+
+  <title>输入url后到页面的呈现的详细过程 - Syasusu&#39;s Blog</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage"  class="use-motion" >
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Syasusu&#39;s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+    
+      <p class="site-subtitle" itemprop="description">你对我笑，我也会对你笑</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+      
+      <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+    <li class="menu-item menu-item-home">
+      <a href="/" class="hvr-icon-pulse " rel="section"><i class="fa fa-home hvr-icon"></i>首页
+      </a>
+    </li>
+    <li class="menu-item menu-item-archives">
+      <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>归档
+        <span class="badge">16</span>
+      </a>
+    </li>
+    <li class="menu-item menu-item-search">
+      <a role="button" class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+      <div class="toggle sidebar-toggle" role="button">
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-toc">
+        文章目录
+      </li>
+      <li class="sidebar-nav-overview">
+        站点概览
+      </li>
+    </ul>
+    <div class="sidebar-panel-container">
+      
+      <div class="post-toc-wrap sidebar-panel">
+        <div class="post-toc animated"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#大致流程">大致流程</a>
+      <ul>
+        <li><a href="#url解析">URL解析</a></li>
+        <li><a href="#dns查询">DNS查询</a>
+          <ul>
+            <li><a href="#什么是dns劫持">什么是dns劫持？</a></li>
+            <li><a href="#dns-prefetch是什么">DNS-Prefetch是什么？</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcp连接">TCP连接</a>
+          <ul>
+            <li><a href="#什么是三次握手">什么是三次握手？</a></li>
+          </ul>
+        </li>
+        <li><a href="#处理请求">处理请求</a></li>
+        <li><a href="#接受响应">接受响应</a></li>
+        <li><a href="#渲染页面">渲染页面</a>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#计算">计算</a></li>
+                <li><a href="#级联">级联</a></li>
+                <li><a href="#渲染阻塞">渲染阻塞</a></li>
+                <li><a href="#布局与绘制">布局与绘制</a></li>
+                <li><a href="#回流与重绘">回流与重绘</a></li>
+                <li><a href="#javascript-编译执行">JavaScript 编译执行</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div>
+      
+      <div class="site-overview-wrap sidebar-panel">
+        
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Syasusu"
+      src="/imgs/avatar.png">
+  <p class="site-author-name" itemprop="name">Syasusu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="/posts/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="/categories/">
+        <span class="site-state-item-count">0</span>
+        <span class="site-state-item-name">分类</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </a>
+    </div>
+  </nav>
+</div>
+<div class="links-of-social site-overview-item animated">
+
+
+  <span class="links-of-social-item">
+    <a href="https://github.com/ericwww" title="Github → https://github.com/ericwww" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fab fa-github fa-fw  hvr-icon "></i>Github
+    </a>
+  </span>
+  <span class="links-of-social-item">
+    <a href="mailto:syasusu@163.com" title="E-Mail → mailto:syasusu@163.com" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fa fa-envelope fa-fw  hvr-icon "></i>E-Mail
+    </a>
+  </span>
+</div>
+<div class="cc-license animated" itemprop="license">
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank" title="共享知识">
+    <img src="/imgs/cc/big/by_nc_sa.svg" alt="共享知识">
+  </a>
+</div>
+<div class="links-of-blogroll site-overview-item animated">
+  <div class="links-of-blogroll-title">
+    <i class="fa fa-fw fa-link fa-fw"></i>Links
+  </div>
+  <ul class="links-of-blogroll-list">
+    <li class="links-of-blogroll-item">
+      <a href="https://blog.bluefissure.com/" title="https://blog.bluefissure.com/" target="_blank">BlueFissure</a>
+    </li>
+    <li class="links-of-blogroll-item">
+      <a href="http://sora.sound.moe/" title="http://sora.sound.moe/" target="_blank">Eridanus Sora</a>
+    </li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-dimmer"></div>
+    </header>
+    
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+    <div class="main-inner post posts-expand">
+      
+  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://ericwww.github.io/posts/whathappeninbrowser/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.png">
+      <meta itemprop="name" content="Syasusu">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Syasusu">
+      <meta itemprop="description" content="">
+    </span>
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="输入url后到页面的呈现的详细过程">
+      <meta itemprop="description" content="一个老生常谈的问题，一个面试时很大概率出现的问题。 虽然网上也有很多这种文章，这里自己写一篇。一是为了亲自过一遍加深理解和记忆，二是留个档，以">
+    </span>
+    <header class="post-header">
+       <h1 class="post-title" itemprop="name headline">输入url后到页面的呈现的详细过程
+  <a href="https://github.com/ericwww/ericwww.github.io/tree/master/post/posts/WhatHappenInBrowser.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
+  <div class="post-meta-items">
+    
+
+
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="far fa-calendar"></i>
+  </span>
+  <span class="post-meta-item-text">发表于：</span>
+  <time title="发表于：2020-02-25 00:00:00 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2020-02-25 00:00:00 &#43;0800 CST">2020-02-25</time>
+</span>
+    
+    
+  </div>
+  <div class="post-meta-items">
+    
+<span class="post-meta-item" title="字数">
+  <span class="post-meta-item-icon">
+    <i class="far fa-file-word"></i>
+  </span>
+  <span class="post-meta-item-text">字数：</span><span>3105</span>
+</span>
+    
+<span class="post-meta-item" title="阅读">
+  <span class="post-meta-item-icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span class="post-meta-item-text">阅读：&asymp;</span>
+  <span>7分钟</span>
+</span>
+
+    
+<span class="post-meta-item" title="浏览">
+  <span class="post-meta-item-icon">
+    <i class="far fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  浏览：
+  </span>
+  <span class="" data-path="/posts/whathappeninbrowser/"><i class="fa fa-sync fa-spin"></i></span>
+</span>
+
+  </div>
+  
+</div>
+
+    </header>
+    <div class="post-body" itemprop="articleBody">
+      
+  <p>一个老生常谈的问题，一个面试时很大概率出现的问题。</p>
+<p>虽然网上也有很多这种文章，这里自己写一篇。一是为了亲自过一遍加深理解和记忆，二是留个档，以便日后回顾。</p>
+<h1 id="大致流程">大致流程</h1>
+<ol>
+<li>URL 解析</li>
+<li>DNS 查询</li>
+<li>TCP 连接</li>
+<li>处理请求</li>
+<li>接受响应</li>
+<li>渲染页面</li>
+</ol>
+<h2 id="url解析">URL解析</h2>
+<p>首先浏览器会判断你输入的是一个合法的URL还是一个带搜索的关键词，并且根据输入的内容自动完成自动匹配，字符编码等操作。</p>
+<h2 id="dns查询">DNS查询</h2>
+<ol>
+<li>浏览器缓存
+浏览器会先检查是否在缓存中，没有则调用系统库函数进行查询。</li>
+<li>操作系统缓存
+操作系统也有自己的 DNS缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。</li>
+<li>路由器缓存
+路由器也有自己的缓存。</li>
+<li>ISP DNS 缓存
+ISP DNS 就是在客户端电脑上设置的首选 DNS 服务器，它们在大多数情况下都会有缓存。</li>
+<li>根域名服务器查询
+在前面所有步骤没有缓存的情况下，本地 DNS 服务器会将请求转发到互联网上的根域</li>
+</ol>
+<h3 id="什么是dns劫持">什么是dns劫持？</h3>
+<p>dns劫持是一种互联网攻击，通过攻击域名解析服务器（DNS），或伪造域名解析服务器（DNS）的方法，把目标网站域名解析到错误的地址从而实现用户无法访问目标网站的目的。</p>
+<h3 id="dns-prefetch是什么">DNS-Prefetch是什么？</h3>
+<p>DNS预解析是一种前端优化的手段。为了帮助浏览器对某些域名进行预解析，我们可以在html标签中添加</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff79c6">link</span> <span style="color:#50fa7b">rel</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;dns-prefetch&#34;</span> <span style="color:#50fa7b">href</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;//domain.com&#34;</span>&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="tcp连接">TCP连接</h2>
+<blockquote>
+<p>应用层：发送 HTTP 请求
+在前面的步骤我们已经得到服务器的 IP 地址，浏览器会开始构造一个 HTTP 报文，其中包括：
+请求报头（Request Header）：请求方法、目标地址、遵循的协议等等
+请求主体（其他参数）
+传输层：TCP 传输报文
+传输层会发起一条到达服务器的 TCP连接，为了方便传输，会对数据进行分割（以报文段为单位），并标记编号，方便服务器接受时能够准确地还原报文信息。
+在建立连接前，会先进行 TCP三次握手。</p>
+</blockquote>
+<h3 id="什么是三次握手">什么是三次握手？</h3>
+<blockquote>
+<p>第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。
+第二次握手：Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。
+第三次握手：Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了。</p>
+</blockquote>
+<blockquote>
+<p>网络层：IP协议查询Mac地址
+将数据段打包，并加入源及目标的IP地址，并且负责寻找传输路线。
+判断目标地址是否与当前地址处于同一网络中，是的话直接根据 Mac 地址发送，否则使用路由表查找下一跳地址，以及使用 ARP 协议查询它的 Mac 地址。
+数据链路层：以太网协议
+以太网协议
+根据以太网协议将数据分为以“帧”为单位的数据包，每一帧分为两个部分：
+标头：数据包的发送者、接受者、数据类型
+数据：数据包具体内容</p>
+</blockquote>
+<h2 id="处理请求">处理请求</h2>
+<p>当数据包到达服务端后，它也通过数据链路层、网络层、传输层、应用层。通过层层解析，服务端拿到客户端发送的http报文，对内容进行解析、处理，并将所需要的静态文件等，通过刚刚的路径传回客户端。</p>
+<h2 id="接受响应">接受响应</h2>
+<p>浏览器接收到来自服务器的响应资源后，会对资源进行分析。</p>
+<p>首先查看 Response header，根据不同状态码做不同的事（比如上面提到的重定向）。</p>
+<p>然后，对响应资源做缓存。</p>
+<p>接下来，根据响应资源里的 MIME 类型去解析响应内容（比如 HTML、Image各有不同的解析方式）。</p>
+<h2 id="渲染页面">渲染页面</h2>
+<p>浏览器会解析HTML文件生成DOM树，解析CSS文件生成CSS规则树，然后二者会合并成一颗渲染树。</p>
+<p>渲染树会忽略那些不需要渲染的节点，比如设置了<em>display:none</em>的节点。</p>
+<h4 id="计算">计算</h4>
+<p>通过计算让任何尺寸值都减少到三个可能之一：auto、百分比、px，比如把rem转化为px。</p>
+<h4 id="级联">级联</h4>
+<p>浏览器需要一种方法来确定哪些样式才真正需要应用到对应元素，所以它使用一个叫做specificity的公式，这个公式会通过：</p>
+<ul>
+<li>标签名、class、id</li>
+<li>是否内联样式</li>
+<li>!important
+然后得出一个权重值，取最高的那个。</li>
+</ul>
+<h4 id="渲染阻塞">渲染阻塞</h4>
+<p>当遇到一个script标签时，DOM 构建会被暂停，直至脚本完成执行，然后继续构建 DOM 树。
+但如果 JS 依赖 CSS 样式，而它还没有被下载和构建时，浏览器就会延迟脚本执行，直至 CSS Rules 被构建。
+所以我们知道：</p>
+<ul>
+<li>CSS 会阻塞 JS 执行</li>
+<li>JS 会阻塞后面的 DOM 解析</li>
+</ul>
+<p>为了避免这种情况，应该遵循以下原则：</p>
+<ul>
+<li>CSS 资源排在 JavaScript 资源前面</li>
+<li>js 放在 HTML 最底部，也就是 前</li>
+</ul>
+<h4 id="布局与绘制">布局与绘制</h4>
+<p>确定渲染树种所有节点的几何属性，比如：位置、大小等等，最后输入一个盒子模型，它能精准地捕获到每个元素在屏幕内的准确位置与大小。</p>
+<p>然后遍历渲染树，调用渲染器的 paint() 方法在屏幕上显示其内容。</p>
+<h4 id="回流与重绘">回流与重绘</h4>
+<p>回流(reflow)</p>
+<p>当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从html标签开始递归往下，重新计算位置和大小。
+reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。</p>
+<p>重绘(repaint)</p>
+<p>改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。
+每次重绘后，浏览器还需要合并渲染层并输出到屏幕上。
+回流的成本要比重绘高很多，所以我们应该尽量避免产生回流。</p>
+<p>比如：</p>
+<blockquote>
+<p>display:none 会触发回流，而 visibility:hidden 只会触发重绘。</p>
+</blockquote>
+<h4 id="javascript-编译执行">JavaScript 编译执行</h4>
+<p>1.词法分析</p>
+<p>JS 脚本加载完毕后，会首先进入语法分析阶段，它首先会分析代码块的语法是否正确，不正确则抛出“语法错误”，停止执行。
+几个步骤：</p>
+<p>分词，例如将var a = 2，，分成var、a、=、2这样的词法单元。
+解析，将词法单元转换成抽象语法树（AST）。
+代码生成，将抽象语法树转换成机器指令。</p>
+<p>2.预编译</p>
+<p>JS 有三种运行环境：</p>
+<ul>
+<li>全局环境</li>
+<li>函数环境</li>
+<li>eval
+每进入一个不同的运行环境都会创建一个对应的执行上下文，根据不同的上下文环境，形成一个函数调用栈，栈底永远是全局执行上下文，栈顶则永远是当前执行上下文。
+创建执行上下文
+创建执行上下文的过程中，主要做了以下三件事：</li>
+</ul>
+<blockquote>
+<ul>
+<li>创建变量对象
+<ul>
+<li>参数、函数、变量</li>
+</ul>
+</li>
+<li>建立作用域链
+<ul>
+<li>确认当前执行环境是否能访问变量</li>
+</ul>
+</li>
+<li>确定 This 指向
+3.执行</li>
+</ul>
+</blockquote>
+<p>虽然 JS 是单线程的，但实际上参与工作的线程一共有四个：</p>
+<p>其中三个只是协助，只有 JS 引擎线程是真正执行的</p>
+<blockquote>
+<ul>
+<li>JS 引擎线程：也叫 JS 内核，负责解析执行 JS 脚本程序的主线程，例如 V8 引擎</li>
+<li>事件触发线程：属于浏览器内核线程，主要用于控制事件，例如鼠标、键盘等，当事件被触发时，就会把事件的处理函数推进事件队列，等待 JS 引擎线程执行</li>
+<li>定时器触发线程：主要控制setInterval和setTimeout，用来计时，计时完毕后，则把定时器的处理函数推进事件队列中，等待 JS 引擎线程。</li>
+<li>HTTP 异步请求线程：通过XMLHttpRequest连接后，通过浏览器新开的一个线程，监控readyState状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待JS引擎线程执行。</li>
+</ul>
+</blockquote>
+<p><em>宏任务</em></p>
+<p>分为：</p>
+<ul>
+<li>同步任务：按照顺序执行，只有前一个任务完成后，才能执行后一个任务</li>
+<li>异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待JS引擎主线程上的任务执行完毕时才开始执行，例如异步Ajax、DOM事件，setTimeout等。</li>
+</ul>
+<p><em>微任务</em></p>
+<p>微任务是ES6和Node环境下的，主要 API 有：Promise，process.nextTick。
+微任务的执行在宏任务的同步任务之后，在异步任务之前。</p>
+
+
+    </div>
+    <footer class="post-footer">
+      
+
+<div class="post-tags">
+  
+    <a href="/tags/%e5%89%8d%e7%ab%af">
+    前端
+  </a>
+</div>
+
+<hr/>
+
+
+
+
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    <a href="https://ericwww.github.io/posts/datastructureinjavascript1/" rel="next" title="JavaScript中的数据结构（一）">
+      <i class="fa fa-chevron-left"></i> JavaScript中的数据结构（一）
+    </a>
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    <a href="https://ericwww.github.io/posts/dht11/" rel="prev" title="利用dht11与Raspberry Pi构建温湿度监控平台">
+      利用dht11与Raspberry Pi构建温湿度监控平台
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+    </footer>
+  </article>
+</div>
+
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    2017 - 2022
+  </span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syasu</span>
+</div>
+
+<div class="powered-by">
+  由 <a href='https://gohugo.io' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' target='_blank'>Hugo NexT.Gemini</a> 强力驱动
+</div>
+
+
+    </div>
+  </footer>
+  <script type="text/javascript" src="//unpkg.com/animejs@3.2.1/lib/anime.min.js" defer></script>
+  <script type="text/javascript" src="//unpkg.com/mathjax@3.2.0/es5/tex-mml-chtml.js" defer></script>
+
+
+
+
+<script type="text/javascript" src="/js/hugo-next.min.4caa8ee60ccc3c740c130502fcb8bc4de48e32c300a9ba9e8d1da71f70cee5b5.js" defer></script> 
+</body>
+
+</html>

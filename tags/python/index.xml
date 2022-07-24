@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/tags/python/</link>
+    <description>Recent content in Python on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language><atom:link href="https://ericwww.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows下Python2&amp;Python3共存的解决方案</title>
+      <link>https://ericwww.github.io/posts/py2736together/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/py2736together/</guid>
+      <description>近来做院创和新苗要用到OpenCV了，自己电脑装的是Python3.6，但是cv2得在Python2.7下跑，又懒得搞虚拟机，就搞了个双版本</description>
+    </item>
+    
+  </channel>
+</rss>

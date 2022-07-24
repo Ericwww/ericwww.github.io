@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)" />
+<meta name="generator" content="Hugo 0.102.0-DEV" />
+<link rel="shortcut icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
+<meta itemprop="name" content="利用dht11与Raspberry Pi构建温湿度监控平台" />
+<meta itemprop="description" content="" />
+<meta itemprop="datePublished" ZgotmplZ />
+<meta itemprop="dateModified" ZgotmplZ />
+<meta itemprop="image" content="https://ericwww.github.io/imgs/avatar.png" />
+<meta itemprop="keywords" content="前端" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="利用dht11与Raspberry Pi构建温湿度监控平台" />
+<meta property="og:description" content="" />
+<meta property="og:image" content="/imgs/avatar.png" />
+<meta property="og:image:width" content="312" />
+<meta property="og:image:height" content="312" />
+<meta property="og:image:type" content="image/jpeg/png/svg/jpg" />
+<meta property="og:url" content="https://ericwww.github.io/posts/dht11/"/>
+<meta property="og:site_name" content="Syasusu&#39;s Blog" />
+<meta property="og:locale" content="zh-CN"/>
+<meta property="article:author" content="Syasusu" />
+<meta property="article:published_time" content="2019-09-09 00:00:00 &#43;0800 CST" />
+<meta property="article:modified_time" content="2019-09-09 00:00:00 &#43;0800 CST" />
+
+
+  <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
+
+  <link rel="stylesheet" href="/css/main.min.28ea124112ce3d326f4cb6cc4cd86f5fb882d3b1fa775e959f3317e1886d95cd.css">
+  <style type="text/css">
+    .post-footer hr:after {
+      content: "~ 我可是有底线的哟 ~";
+    }
+  </style>
+  
+  <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "",ck: "",autoTrack:true})</script>
+
+  <title>利用dht11与Raspberry Pi构建温湿度监控平台 - Syasusu&#39;s Blog</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage"  class="use-motion" >
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Syasusu&#39;s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+    
+      <p class="site-subtitle" itemprop="description">你对我笑，我也会对你笑</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+      
+      <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+    <li class="menu-item menu-item-home">
+      <a href="/" class="hvr-icon-pulse " rel="section"><i class="fa fa-home hvr-icon"></i>首页
+      </a>
+    </li>
+    <li class="menu-item menu-item-archives">
+      <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>归档
+        <span class="badge">16</span>
+      </a>
+    </li>
+    <li class="menu-item menu-item-search">
+      <a role="button" class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+      <div class="toggle sidebar-toggle" role="button">
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-toc">
+        文章目录
+      </li>
+      <li class="sidebar-nav-overview">
+        站点概览
+      </li>
+    </ul>
+    <div class="sidebar-panel-container">
+      
+      <div class="post-toc-wrap sidebar-panel">
+        <div class="post-toc animated"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#硬件">硬件</a></li>
+        <li><a href="#软件">软件</a>
+          <ul>
+            <li><a href="#后端">后端</a></li>
+            <li><a href="#前端">前端</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div>
+      
+      <div class="site-overview-wrap sidebar-panel">
+        
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Syasusu"
+      src="/imgs/avatar.png">
+  <p class="site-author-name" itemprop="name">Syasusu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="/posts/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="/categories/">
+        <span class="site-state-item-count">0</span>
+        <span class="site-state-item-name">分类</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </a>
+    </div>
+  </nav>
+</div>
+<div class="links-of-social site-overview-item animated">
+
+
+  <span class="links-of-social-item">
+    <a href="https://github.com/ericwww" title="Github → https://github.com/ericwww" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fab fa-github fa-fw  hvr-icon "></i>Github
+    </a>
+  </span>
+  <span class="links-of-social-item">
+    <a href="mailto:syasusu@163.com" title="E-Mail → mailto:syasusu@163.com" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fa fa-envelope fa-fw  hvr-icon "></i>E-Mail
+    </a>
+  </span>
+</div>
+<div class="cc-license animated" itemprop="license">
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank" title="共享知识">
+    <img src="/imgs/cc/big/by_nc_sa.svg" alt="共享知识">
+  </a>
+</div>
+<div class="links-of-blogroll site-overview-item animated">
+  <div class="links-of-blogroll-title">
+    <i class="fa fa-fw fa-link fa-fw"></i>Links
+  </div>
+  <ul class="links-of-blogroll-list">
+    <li class="links-of-blogroll-item">
+      <a href="https://blog.bluefissure.com/" title="https://blog.bluefissure.com/" target="_blank">BlueFissure</a>
+    </li>
+    <li class="links-of-blogroll-item">
+      <a href="http://sora.sound.moe/" title="http://sora.sound.moe/" target="_blank">Eridanus Sora</a>
+    </li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-dimmer"></div>
+    </header>
+    
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+    <div class="main-inner post posts-expand">
+      
+  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://ericwww.github.io/posts/dht11/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.png">
+      <meta itemprop="name" content="Syasusu">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Syasusu">
+      <meta itemprop="description" content="">
+    </span>
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="利用dht11与Raspberry Pi构建温湿度监控平台">
+      <meta itemprop="description" content="这次学校短学期的课题是利用dht11与树莓派做一个温湿度监控平台，要求能实现实时显示，查询历史，定时浇灌，报警等功能。 硬件 dht11是一款有">
+    </span>
+    <header class="post-header">
+       <h1 class="post-title" itemprop="name headline">利用dht11与Raspberry Pi构建温湿度监控平台
+  <a href="https://github.com/ericwww/ericwww.github.io/tree/master/post/posts/dht11.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
+  <div class="post-meta-items">
+    
+
+
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="far fa-calendar"></i>
+  </span>
+  <span class="post-meta-item-text">发表于：</span>
+  <time title="发表于：2019-09-09 00:00:00 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2019-09-09 00:00:00 &#43;0800 CST">2019-09-09</time>
+</span>
+    
+    
+  </div>
+  <div class="post-meta-items">
+    
+<span class="post-meta-item" title="字数">
+  <span class="post-meta-item-icon">
+    <i class="far fa-file-word"></i>
+  </span>
+  <span class="post-meta-item-text">字数：</span><span>1839</span>
+</span>
+    
+<span class="post-meta-item" title="阅读">
+  <span class="post-meta-item-icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span class="post-meta-item-text">阅读：&asymp;</span>
+  <span>4分钟</span>
+</span>
+
+    
+<span class="post-meta-item" title="浏览">
+  <span class="post-meta-item-icon">
+    <i class="far fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  浏览：
+  </span>
+  <span class="" data-path="/posts/dht11/"><i class="fa fa-sync fa-spin"></i></span>
+</span>
+
+  </div>
+  
+</div>
+
+    </header>
+    <div class="post-body" itemprop="articleBody">
+      
+  <p>这次学校短学期的课题是利用dht11与树莓派做一个温湿度监控平台，要求能实现实时显示，查询历史，定时浇灌，报警等功能。</p>
+<h2 id="硬件">硬件</h2>
+<p>dht11是一款有已校准数字信号输出的温湿度传感器。 其精度湿度+-5%RH， 温度+-2°C，量程湿度20-90%RH， 温度0~50°C。</p>
+<p>首先我们要从dht11上读出温湿度，dht11分别有3个引脚，分别为VCC、GND和DOUT，DOUT为数据输出的引脚。</p>
+<p>树莓派引脚图</p>
+<p><img src="http://shumeipai.nxez.com/wp-content/uploads/2015/03/rpi-pins-40-0.png" alt="树莓派引脚图"></p>
+<p>我们将DOUT接在物理引脚7脚上，代码如下</p>
+<p>因为我们选了BCM模式，所以代码中的引脚编号是4</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#6272a4"># dht11.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> RPi.GPIO <span style="color:#ff79c6">as</span> GPIO
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">calTemp</span>():
+</span></span><span style="display:flex;"><span>    channel <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#ff79c6">=</span> []
+</span></span><span style="display:flex;"><span>    j <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>setmode(GPIO<span style="color:#ff79c6">.</span>BCM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    time<span style="color:#ff79c6">.</span>sleep(<span style="color:#bd93f9">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>setup(channel, GPIO<span style="color:#ff79c6">.</span>OUT)
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>output(channel, GPIO<span style="color:#ff79c6">.</span>LOW)
+</span></span><span style="display:flex;"><span>    time<span style="color:#ff79c6">.</span>sleep(<span style="color:#bd93f9">0.02</span>)
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>output(channel, GPIO<span style="color:#ff79c6">.</span>HIGH)
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>setup(channel, GPIO<span style="color:#ff79c6">.</span>IN)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> GPIO<span style="color:#ff79c6">.</span>input(channel) <span style="color:#ff79c6">==</span> GPIO<span style="color:#ff79c6">.</span>LOW:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">continue</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> GPIO<span style="color:#ff79c6">.</span>input(channel) <span style="color:#ff79c6">==</span> GPIO<span style="color:#ff79c6">.</span>HIGH:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> j <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">40</span>:
+</span></span><span style="display:flex;"><span>        k <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> GPIO<span style="color:#ff79c6">.</span>input(channel) <span style="color:#ff79c6">==</span> GPIO<span style="color:#ff79c6">.</span>LOW:
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> GPIO<span style="color:#ff79c6">.</span>input(channel) <span style="color:#ff79c6">==</span> GPIO<span style="color:#ff79c6">.</span>HIGH:
+</span></span><span style="display:flex;"><span>            k <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> k <span style="color:#ff79c6">&gt;</span> <span style="color:#bd93f9">100</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">break</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> k <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">8</span>:
+</span></span><span style="display:flex;"><span>            data<span style="color:#ff79c6">.</span>append(<span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span>:
+</span></span><span style="display:flex;"><span>            data<span style="color:#ff79c6">.</span>append(<span style="color:#bd93f9">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        j <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    humidity_bit <span style="color:#ff79c6">=</span> data[<span style="color:#bd93f9">0</span>:<span style="color:#bd93f9">8</span>]
+</span></span><span style="display:flex;"><span>    humidity_point_bit <span style="color:#ff79c6">=</span> data[<span style="color:#bd93f9">8</span>:<span style="color:#bd93f9">16</span>]
+</span></span><span style="display:flex;"><span>    temperature_bit <span style="color:#ff79c6">=</span> data[<span style="color:#bd93f9">16</span>:<span style="color:#bd93f9">24</span>]
+</span></span><span style="display:flex;"><span>    temperature_point_bit <span style="color:#ff79c6">=</span> data[<span style="color:#bd93f9">24</span>:<span style="color:#bd93f9">32</span>]
+</span></span><span style="display:flex;"><span>    check_bit <span style="color:#ff79c6">=</span> data[<span style="color:#bd93f9">32</span>:<span style="color:#bd93f9">40</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    humidity <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>    humidity_point <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>    temperature <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>    temperature_point <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>    check <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> i <span style="color:#ff79c6">in</span> <span style="color:#8be9fd;font-style:italic">range</span>(<span style="color:#bd93f9">8</span>):
+</span></span><span style="display:flex;"><span>        humidity <span style="color:#ff79c6">+=</span> humidity_bit[i] <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2</span> <span style="color:#ff79c6">**</span> (<span style="color:#bd93f9">7</span> <span style="color:#ff79c6">-</span> i)
+</span></span><span style="display:flex;"><span>        humidity_point <span style="color:#ff79c6">+=</span> humidity_point_bit[i] <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2</span> <span style="color:#ff79c6">**</span> (<span style="color:#bd93f9">7</span> <span style="color:#ff79c6">-</span> i)
+</span></span><span style="display:flex;"><span>        temperature <span style="color:#ff79c6">+=</span> temperature_bit[i] <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2</span> <span style="color:#ff79c6">**</span> (<span style="color:#bd93f9">7</span> <span style="color:#ff79c6">-</span> i)
+</span></span><span style="display:flex;"><span>        temperature_point <span style="color:#ff79c6">+=</span> temperature_point_bit[i] <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2</span> <span style="color:#ff79c6">**</span> (<span style="color:#bd93f9">7</span> <span style="color:#ff79c6">-</span> i)
+</span></span><span style="display:flex;"><span>        check <span style="color:#ff79c6">+=</span> check_bit[i] <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2</span> <span style="color:#ff79c6">**</span> (<span style="color:#bd93f9">7</span> <span style="color:#ff79c6">-</span> i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    tmp <span style="color:#ff79c6">=</span> humidity <span style="color:#ff79c6">+</span> humidity_point <span style="color:#ff79c6">+</span> temperature <span style="color:#ff79c6">+</span> temperature_point
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> check <span style="color:#ff79c6">==</span> tmp:
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4"># print &#34;temperature :&#34;, temperature, &#34;*C, humidity :&#34;, humidity, &#34;%&#34;</span>
+</span></span><span style="display:flex;"><span>		    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#39;datetime&#39;</span>:<span style="color:#8be9fd;font-style:italic">int</span>(time<span style="color:#ff79c6">.</span>time()),<span style="color:#f1fa8c">&#39;temperature&#39;</span> : temperature,<span style="color:#f1fa8c">&#39;humidity&#39;</span> :humidity,}
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4"># print &#34;wrong&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4"># print &#34;temperature :&#34;, temperature, &#34;*C, humidity :&#34;, humidity, &#34;% check :&#34;, check, &#34;, tmp :&#34;, tmp</span>
+</span></span><span style="display:flex;"><span>		    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#39;datetime&#39;</span>:<span style="color:#8be9fd;font-style:italic">int</span>(time<span style="color:#ff79c6">.</span>time()),<span style="color:#f1fa8c">&#39;temperature&#39;</span> : temperature,<span style="color:#f1fa8c">&#39;humidity&#39;</span> :humidity,<span style="color:#f1fa8c">&#39;error&#39;</span>:<span style="color:#bd93f9">1</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>cleanup()
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="软件">软件</h2>
+<p>好了，温度读取完成了，该思考怎么把数据反馈到网页上了，老师建议我们用Flask来做，并给了我们一份材料。材料中给的范例是在拿到温湿度数据后，利用<code>render_template</code>，把数据传进网页，如下。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">hello</span>():
+</span></span><span style="display:flex;"><span>    templateData<span style="color:#ff79c6">=</span>dht11();
+</span></span><span style="display:flex;"><span>    templateData<span style="color:#ff79c6">=</span>{
+</span></span><span style="display:flex;"><span>    	<span style="color:#f1fa8c">&#39;temperature&#39;</span> : <span style="color:#bd93f9">23</span>,
+</span></span><span style="display:flex;"><span>    	<span style="color:#f1fa8c">&#39;humidity&#39;</span> :<span style="color:#bd93f9">30</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> render_template(<span style="color:#f1fa8c">&#34;index.html&#34;</span>, <span style="color:#ff79c6">**</span>templateData)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这时我想，既然都用到Flask了，为何不能做一下前后端分离呢？</p>
+<h3 id="后端">后端</h3>
+<p>上网查了一下利用Flask架设后端服务器的相关知识，写了一个获取温湿度数据的接口。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/getData&#34;</span>, methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">home</span>():
+</span></span><span style="display:flex;"><span>    response<span style="color:#ff79c6">=</span>dht11<span style="color:#ff79c6">.</span>calTemp()
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(response)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>历史查询功能，乍一想可能需要上个数据库，但无奈技艺不精，选择了将数据保存在json文件中去进行反复的读写。</p>
+<p>同时新增了一个历史查询的接口。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/getData&#34;</span>, methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">home</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">=</span>[]
+</span></span><span style="display:flex;"><span>    response<span style="color:#ff79c6">=</span>dht11<span style="color:#ff79c6">.</span>calTemp()
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(<span style="color:#f1fa8c">&#34;./data.json&#34;</span>,<span style="color:#f1fa8c">&#39;r+&#39;</span>) <span style="color:#ff79c6">as</span> f:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> os<span style="color:#ff79c6">.</span>path<span style="color:#ff79c6">.</span>getsize(<span style="color:#f1fa8c">&#39;./data.json&#39;</span>)<span style="color:#ff79c6">==</span><span style="color:#bd93f9">0</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">.</span>append(response)
+</span></span><span style="display:flex;"><span>            json<span style="color:#ff79c6">.</span>dump(<span style="color:#8be9fd;font-style:italic">list</span>,f)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">=</span>json<span style="color:#ff79c6">.</span>load(f)
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">.</span>append(response)
+</span></span><span style="display:flex;"><span>            f<span style="color:#ff79c6">.</span>seek(<span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>            f<span style="color:#ff79c6">.</span>truncate()
+</span></span><span style="display:flex;"><span>            json<span style="color:#ff79c6">.</span>dump(<span style="color:#8be9fd;font-style:italic">list</span>,f)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(response)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/getHistory&#34;</span>, methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">history</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(<span style="color:#f1fa8c">&#34;./data.json&#34;</span>,<span style="color:#f1fa8c">&#39;r+&#39;</span>) <span style="color:#ff79c6">as</span> f:
+</span></span><span style="display:flex;"><span>        res<span style="color:#ff79c6">=</span>json<span style="color:#ff79c6">.</span>load(f)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(res)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>还有一个定时浇灌的功能，我们用led灯去模拟浇灌系统，由前端传一个时间戳和浇灌时间，然后进入一个死循环，去判断设定时间和当前时间是否相等，再进行浇灌。</p>
+<p>这里涉及到一个问题，进入死循环后，其他操作无法进行，整个程序会卡死在这一步直到到达预定的时间，一开始以为可以用多线程来解决，就去看了一下thread，后来操作了一下发现还是无解。之后经老师指点，建议我使用多进程试一试，便用了multiprocessing实现多进程，可以在进入死循环的同时，其余功能也正常运行。</p>
+<p>之后这里还有一个小问题，传回来的时间戳和python自己获取当前时间的时间戳貌似很难相等，猜测应该是程序本身运行也需要时间，无法做到如此精确，便更改了一下设计思路，前端传回设定时间和当前时间的时间差，然后进入程序后先sleep，再运行。</p>
+<p>具体代码如下</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/lightLed&#34;</span>,methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">light</span>():
+</span></span><span style="display:flex;"><span>    sleepTime<span style="color:#ff79c6">=</span>request<span style="color:#ff79c6">.</span>args<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#34;sleepTime&#34;</span>)
+</span></span><span style="display:flex;"><span>    lightTime<span style="color:#ff79c6">=</span>request<span style="color:#ff79c6">.</span>args<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#34;lightTime&#34;</span>)
+</span></span><span style="display:flex;"><span>    p<span style="color:#ff79c6">=</span>multiprocessing<span style="color:#ff79c6">.</span>Process(target<span style="color:#ff79c6">=</span>led<span style="color:#ff79c6">.</span>lightLED,args<span style="color:#ff79c6">=</span>(sleepTime,lightTime,))
+</span></span><span style="display:flex;"><span>    p<span style="color:#ff79c6">.</span>start()
+</span></span><span style="display:flex;"><span>    response<span style="color:#ff79c6">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#39;light&#39;</span>:<span style="color:#f1fa8c">&#39;true&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#39;sleeptime&#39;</span>:sleepTime,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#39;lighttime&#39;</span>:lightTime,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(response)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#6272a4"># led.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> RPi.GPIO <span style="color:#ff79c6">as</span> GPIO
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">lightLED</span>(sleepTime,lightTime):
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>setmode(GPIO<span style="color:#ff79c6">.</span>BCM)
+</span></span><span style="display:flex;"><span>    time<span style="color:#ff79c6">.</span>sleep(<span style="color:#8be9fd;font-style:italic">float</span>(sleepTime)
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>setup(<span style="color:#bd93f9">27</span>, GPIO<span style="color:#ff79c6">.</span>OUT)
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>output(<span style="color:#bd93f9">27</span>, GPIO<span style="color:#ff79c6">.</span>HIGH)
+</span></span><span style="display:flex;"><span>    time<span style="color:#ff79c6">.</span>sleep(<span style="color:#8be9fd;font-style:italic">float</span>(lightTime))
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>output(<span style="color:#bd93f9">27</span>, GPIO<span style="color:#ff79c6">.</span>LOW)
+</span></span><span style="display:flex;"><span>    time<span style="color:#ff79c6">.</span>sleep(<span style="color:#bd93f9">1</span>)
+</span></span><span style="display:flex;"><span>    GPIO<span style="color:#ff79c6">.</span>cleanup()
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>整个后端代码如下</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> flask <span style="color:#ff79c6">import</span> Flask, render_template, jsonify, request
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">from</span> flask_cors <span style="color:#ff79c6">import</span> CORS
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> dht11
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> led
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> multiprocessing
+</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>CORS(app, resources<span style="color:#ff79c6">=</span>{<span style="color:#f1fa8c">r</span><span style="color:#f1fa8c">&#34;/getData&#34;</span>: {<span style="color:#f1fa8c">&#34;origins&#34;</span>: <span style="color:#f1fa8c">&#34;*&#34;</span>}})
+</span></span><span style="display:flex;"><span>CORS(app, resources<span style="color:#ff79c6">=</span>{<span style="color:#f1fa8c">r</span><span style="color:#f1fa8c">&#34;/lightLed&#34;</span>: {<span style="color:#f1fa8c">&#34;origins&#34;</span>: <span style="color:#f1fa8c">&#34;*&#34;</span>}})
+</span></span><span style="display:flex;"><span>CORS(app, resources<span style="color:#ff79c6">=</span>{<span style="color:#f1fa8c">r</span><span style="color:#f1fa8c">&#34;/getHistory&#34;</span>: {<span style="color:#f1fa8c">&#34;origins&#34;</span>: <span style="color:#f1fa8c">&#34;*&#34;</span>}})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/getData&#34;</span>, methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">home</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">=</span>[]
+</span></span><span style="display:flex;"><span>    response<span style="color:#ff79c6">=</span>dht11<span style="color:#ff79c6">.</span>calTemp()
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(<span style="color:#f1fa8c">&#34;./data.json&#34;</span>,<span style="color:#f1fa8c">&#39;r+&#39;</span>) <span style="color:#ff79c6">as</span> f:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> os<span style="color:#ff79c6">.</span>path<span style="color:#ff79c6">.</span>getsize(<span style="color:#f1fa8c">&#39;./data.json&#39;</span>)<span style="color:#ff79c6">==</span><span style="color:#bd93f9">0</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">.</span>append(response)
+</span></span><span style="display:flex;"><span>            json<span style="color:#ff79c6">.</span>dump(<span style="color:#8be9fd;font-style:italic">list</span>,f)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">=</span>json<span style="color:#ff79c6">.</span>load(f)
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">list</span><span style="color:#ff79c6">.</span>append(response)
+</span></span><span style="display:flex;"><span>            f<span style="color:#ff79c6">.</span>seek(<span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>            f<span style="color:#ff79c6">.</span>truncate()
+</span></span><span style="display:flex;"><span>            json<span style="color:#ff79c6">.</span>dump(<span style="color:#8be9fd;font-style:italic">list</span>,f)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(response)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/getHistory&#34;</span>, methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">history</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(<span style="color:#f1fa8c">&#34;./data.json&#34;</span>,<span style="color:#f1fa8c">&#39;r+&#39;</span>) <span style="color:#ff79c6">as</span> f:
+</span></span><span style="display:flex;"><span>        res<span style="color:#ff79c6">=</span>json<span style="color:#ff79c6">.</span>load(f)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(res)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@app<span style="color:#ff79c6">.</span>route(<span style="color:#f1fa8c">&#34;/lightLed&#34;</span>,methods<span style="color:#ff79c6">=</span>[<span style="color:#f1fa8c">&#39;GET&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">light</span>():
+</span></span><span style="display:flex;"><span>    sleepTime<span style="color:#ff79c6">=</span>request<span style="color:#ff79c6">.</span>args<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#34;sleepTime&#34;</span>)
+</span></span><span style="display:flex;"><span>    lightTime<span style="color:#ff79c6">=</span>request<span style="color:#ff79c6">.</span>args<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#34;lightTime&#34;</span>)
+</span></span><span style="display:flex;"><span>    p<span style="color:#ff79c6">=</span>multiprocessing<span style="color:#ff79c6">.</span>Process(target<span style="color:#ff79c6">=</span>led<span style="color:#ff79c6">.</span>lightLED,args<span style="color:#ff79c6">=</span>(sleepTime,lightTime,))
+</span></span><span style="display:flex;"><span>    p<span style="color:#ff79c6">.</span>start()
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4"># led.lightLED(lightTime)</span>
+</span></span><span style="display:flex;"><span>    response<span style="color:#ff79c6">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#39;light&#39;</span>:<span style="color:#f1fa8c">&#39;true&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#39;sleeptime&#39;</span>:sleepTime,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#39;lighttime&#39;</span>:lightTime,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> jsonify(response)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">if</span> __name__ <span style="color:#ff79c6">==</span> <span style="color:#f1fa8c">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#ff79c6">.</span>run(host<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;0.0.0.0&#39;</span>,port<span style="color:#ff79c6">=</span><span style="color:#bd93f9">5000</span>,threaded<span style="color:#ff79c6">=</span><span style="color:#ff79c6">True</span>)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>后端和前端运行在同一个路由器下，所以运行在0.0.0.0地址，这样前端可以直接用树莓派所在的ip访问到。</p>
+<h3 id="前端">前端</h3>
+<p>前端用了自己比较擅长的vue来写，界面如下</p>
+<p><img src="https://syasusu-blog-store.oss-cn-hangzhou.aliyuncs.com/dht11-1.png" alt="dht11-1">
+<img src="https://syasusu-blog-store.oss-cn-hangzhou.aliyuncs.com/dht11-2.png" alt="dht11-1">
+<img src="https://syasusu-blog-store.oss-cn-hangzhou.aliyuncs.com/dht11-3.png" alt="dht11-1"></p>
+<p>向后端请求数据的相关操作如下</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>methods<span style="color:#ff79c6">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">async</span> getData() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> res <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> <span style="color:#ff79c6">this</span>.$http.get(<span style="color:#f1fa8c">&#39;http://172.20.10.4:5000/getData&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.obj<span style="color:#ff79c6">=</span>res.body;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// this.obj.data=this.obj.data*1000;
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">this</span>.tableData.unshift(res.body);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.tempOptions.series[<span style="color:#bd93f9">0</span>].data[<span style="color:#bd93f9">0</span>].value <span style="color:#ff79c6">=</span> res.body.temperature <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2.7</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.tempOptions.series[<span style="color:#bd93f9">0</span>].data[<span style="color:#bd93f9">0</span>].name <span style="color:#ff79c6">=</span> res.body.temperature <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;°C&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.tempOptions.series[<span style="color:#bd93f9">0</span>].data[<span style="color:#bd93f9">1</span>].value <span style="color:#ff79c6">=</span> (<span style="color:#bd93f9">100</span> <span style="color:#ff79c6">-</span> res.body.temperature) <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2.7</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.humiOptions.series[<span style="color:#bd93f9">0</span>].data[<span style="color:#bd93f9">0</span>].value <span style="color:#ff79c6">=</span> res.body.humidity <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2.7</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.humiOptions.series[<span style="color:#bd93f9">0</span>].data[<span style="color:#bd93f9">0</span>].name <span style="color:#ff79c6">=</span> res.body.humidity <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;%&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.humiOptions.series[<span style="color:#bd93f9">0</span>].data[<span style="color:#bd93f9">1</span>].value <span style="color:#ff79c6">=</span> (<span style="color:#bd93f9">100</span> <span style="color:#ff79c6">-</span> res.body.humidity) <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">2.7</span>;
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>created() {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">this</span>.timer <span style="color:#ff79c6">=</span> setInterval(<span style="color:#ff79c6">this</span>.getData, <span style="color:#bd93f9">5000</span>);
+</span></span><span style="display:flex;"><span>},
+</span></span><span style="display:flex;"><span>beforeDestroy() {
+</span></span><span style="display:flex;"><span>  clearInterval(<span style="color:#ff79c6">this</span>.timer);
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>定时浇灌的函数</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff79c6">async</span> lightLed() {
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">let</span> now <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd;font-style:italic">Date</span>().getTime()
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">let</span> setTime <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.setTime.getTime();
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">let</span> sleepTime <span style="color:#ff79c6">=</span> (setTime<span style="color:#ff79c6">-</span>now)<span style="color:#ff79c6">/</span><span style="color:#bd93f9">1000</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">let</span> lightTime <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.lightTime;
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">await</span> <span style="color:#ff79c6">this</span>.$http.get(<span style="color:#f1fa8c">`http://172.20.10.4:5000/lightLed?sleepTime=</span><span style="color:#f1fa8c">${</span>sleepTime<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&amp;lightTime=</span><span style="color:#f1fa8c">${</span>lightTime<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>).then(res =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.$message({
+</span></span><span style="display:flex;"><span>      message<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;成功发送浇灌信息&#39;</span>,
+</span></span><span style="display:flex;"><span>      type<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;success&#39;</span>
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.lightTime <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  err =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">this</span>.$message.error(<span style="color:#f1fa8c">&#39;发送浇灌信息失败,请再次尝试&#39;</span>);
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>温湿度监控报警</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>watch<span style="color:#ff79c6">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#39;obj&#39;</span><span style="color:#ff79c6">:</span> <span style="color:#8be9fd;font-style:italic">function</span>(obj){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(obj.temperature<span style="color:#ff79c6">&gt;</span><span style="color:#bd93f9">37</span>){
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">this</span>.$notify({
+</span></span><span style="display:flex;"><span>        title<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;警告&#39;</span>,
+</span></span><span style="display:flex;"><span>        message<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;温度过高！&#39;</span>,
+</span></span><span style="display:flex;"><span>        type<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;warning&#39;</span>
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(obj.humidity<span style="color:#ff79c6">&gt;</span><span style="color:#bd93f9">70</span>){
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">this</span>.$notify({
+</span></span><span style="display:flex;"><span>        title<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;警告&#39;</span>,
+</span></span><span style="display:flex;"><span>        message<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;湿度过高！&#39;</span>,
+</span></span><span style="display:flex;"><span>        type<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;warning&#39;</span>
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>GitHub地址：
+<a href="https://github.com/Ericwww/dht11-flask-vue" title="dht11-flask-vue" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    dht11-flask-vue
+    <i class="fa fa-external-link-alt"></i>
+</a></p>
+
+
+    </div>
+    <footer class="post-footer">
+      
+
+<div class="post-tags">
+  
+    <a href="/tags/%e5%89%8d%e7%ab%af">
+    前端
+  </a>
+</div>
+
+<hr/>
+
+
+
+
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    <a href="https://ericwww.github.io/posts/whathappeninbrowser/" rel="next" title="输入url后到页面的呈现的详细过程">
+      <i class="fa fa-chevron-left"></i> 输入url后到页面的呈现的详细过程
+    </a>
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    <a href="https://ericwww.github.io/posts/arrayinjs/" rel="prev" title="JavaScript中的引用类型Array">
+      JavaScript中的引用类型Array
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+    </footer>
+  </article>
+</div>
+
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    2017 - 2022
+  </span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syasu</span>
+</div>
+
+<div class="powered-by">
+  由 <a href='https://gohugo.io' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' target='_blank'>Hugo NexT.Gemini</a> 强力驱动
+</div>
+
+
+    </div>
+  </footer>
+  <script type="text/javascript" src="//unpkg.com/animejs@3.2.1/lib/anime.min.js" defer></script>
+  <script type="text/javascript" src="//unpkg.com/mathjax@3.2.0/es5/tex-mml-chtml.js" defer></script>
+
+
+
+
+<script type="text/javascript" src="/js/hugo-next.min.4caa8ee60ccc3c740c130502fcb8bc4de48e32c300a9ba9e8d1da71f70cee5b5.js" defer></script> 
+</body>
+
+</html>
