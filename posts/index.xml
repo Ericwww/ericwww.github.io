@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Syasusu&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 08 Mar 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Jul 2022 00:00:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>terraform源码解析（init命令）</title>
+      <link>https://ericwww.github.io/posts/howterraforminitwork/</link>
+      <pubDate>Mon, 25 Jul 2022 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/howterraforminitwork/</guid>
+      <description>开个新坑，慢慢填～ 主要目的还是想把源码吃透以后把Terraform的内核吃掉，这样我们可以仅依赖于它的模板解析和grpc调用provider</description>
+    </item>
+    
     <item>
       <title>JavaScript中的数据结构（二）</title>
       <link>https://ericwww.github.io/posts/datastructureinjavascript2/</link>

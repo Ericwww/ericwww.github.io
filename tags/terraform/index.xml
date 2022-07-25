@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Terraform on Syasusu&#39;s Blog</title>
+    <link>https://ericwww.github.io/tags/terraform/</link>
+    <description>Recent content in Terraform on Syasusu&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Jul 2022 00:00:00 +0800</lastBuildDate><atom:link href="https://ericwww.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>terraform源码解析（init命令）</title>
+      <link>https://ericwww.github.io/posts/howterraforminitwork/</link>
+      <pubDate>Mon, 25 Jul 2022 00:00:00 +0800</pubDate>
+      
+      <guid>https://ericwww.github.io/posts/howterraforminitwork/</guid>
+      <description>开个新坑，慢慢填～ 主要目的还是想把源码吃透以后把Terraform的内核吃掉，这样我们可以仅依赖于它的模板解析和grpc调用provider</description>
+    </item>
+    
+  </channel>
+</rss>
